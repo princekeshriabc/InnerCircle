@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as userController from '../controllers/user.controller.js';
-import {body} from 'express-validator';
+import { body } from 'express-validator';
+import * as authMiddleware from '../middleware/auth.middleware.js';
 
 const router = Router();
 
@@ -11,5 +12,13 @@ router.post('/register',
     body('password').notEmpty().withMessage('Password is required'),
 
     userController.createUserController);
+
+router.post('/login',
+    body('email').isEmail().withMessage('Invalid email address'),
+    body('password').notEmpty().withMessage('Password is required'),
+
+    userController.loginUserController);
+
+router.get('/profile',authMiddleware.authUser, userController.profileController);
 
 export default router;
