@@ -64,7 +64,7 @@ userSchema.methods.isValidPassword = async function (password) {
 
 userSchema.methods.generateJWT = function () { 
     return jwt.sign({ email: this.email }, process.env.JWT_SECRET, {
-        // expiresIn: "30d",
+        expiresIn: "30d",
     });
 };
 
