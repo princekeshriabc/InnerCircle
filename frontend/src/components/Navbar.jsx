@@ -1,14 +1,16 @@
 // components/Navbar.jsx
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { UserContext } from "../context/user.context";
+import { UserContext,useUser } from "../context/user.context";
 import { FiSettings, FiLogOut } from "react-icons/fi"; // Import settings icon
 
+
 const Navbar = () => {
-  const { user } = useContext(UserContext);
+  const { user, logout } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const navItems = [
     { title: "Home", path: "/" },
@@ -55,6 +57,20 @@ const Navbar = () => {
     },
   };
 
+  const handleLogout = async () => {
+    try {
+      setIsLoading(true);
+      const success = await logout();
+      if (success) {
+        navigate("/"); // Navigate after successful logout
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -67,9 +83,9 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
               <img
-                src="/ezy-skills-logo.png"
-                alt="EZY Skills Logo"
-                className="h-8 w-8 sm:h-10 sm:w-10" // Adjusted size for mobile
+                src="/assets/img9.jpg"
+                alt="Inner Circle Logo"
+                className="h-8 w-8 sm:h-10 sm:w-10 rounded-full" // Adjusted size for mobile
               />
               <span className="ml-2 text-lg sm:text-xl font-bold text-[#FF9361] whitespace-nowrap">
                 Inner Circle
@@ -134,12 +150,49 @@ const Navbar = () => {
                   className="cursor-pointer"
                 >
                   <img
-                    src={user.profileImage || "https://via.placeholder.com/40"}
+                    src={user.profileImage || "/assets/img9.jpg"}
                     alt="Profile"
                     className="w-8 h-8 rounded-full border-2 border-[#FF9361]"
                     onClick={() => navigate("/profile")}
                   />
                 </motion.div>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`px-3 py-1.5 text-sm text-red-500 border border-red-500 rounded-md hover:bg-red-50 transition-colors ${
+                    isLoading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={handleLogout}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <span className="flex items-center">
+                      <svg
+                        className="animate-spin -ml-1 mr-2 h-4 w-4 text-red-500"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Logging out...
+                    </span>
+                  ) : (
+                    "Logout"
+                  )}
+                </motion.button>
               </div>
             )}
           </div>

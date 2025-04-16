@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import connectDB from './db/db.js';
 import userRoutes from './routes/user.route.js';
+import guideRoutes from "./routes/guide.route.js";
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 connectDB(); // Connect to MongoDB
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser()); // Cookie parser middleware
 
 app.use('/api/users', userRoutes); // User routes
+app.use("/api/guides", guideRoutes); // Guide routes
 
 // Import routes
 app.get('/', (req, res) => {
