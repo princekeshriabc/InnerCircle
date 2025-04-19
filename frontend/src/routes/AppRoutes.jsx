@@ -8,6 +8,7 @@ import Guides from "../screens/Guides";
 import CreateGuide from "../screens/CreateGuide";
 import GuideDetail from "../screens/GuideDetail";
 import HomeUser from '../screens/HomeUser'
+import EditGuide from '../screens/EditGuide';
 
 
 const AppRoutes = () => {
@@ -22,6 +23,7 @@ const AppRoutes = () => {
           <Route path="/guides" element={<Guides />} />
           <Route path="/guides/create" element={<CreateGuide />} />
           <Route path="/guides/:id" element={<GuideDetail />} />
+          <Route path="/guides/edit/:id" element={<EditGuide />} />
         </Routes>
       </MainLayout>
     </BrowserRouter>
