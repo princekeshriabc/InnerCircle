@@ -348,6 +348,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useUser } from "../context/user.context";
 import axios from "../config/axios";
+import { FiSettings, FiLogOut } from "react-icons/fi";
 
 const Navbar = () => {
   const { user, setUser } = useUser();
@@ -415,14 +416,38 @@ const Navbar = () => {
             </Link>
 
             {user ? (
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick= {handleLogout}
-                className="px-4 py-2 text-red-500 border border-red-500 rounded-md hover:bg-red-50"
-              >
-                Logout
-              </motion.button>
+              <div className="flex items-center space-x-4">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleLogout}
+                  className="px-4 py-2 text-red-500 hover:border hover:border-red-500 rounded-md hover:bg-red-50"
+                >
+                  Logout
+                </motion.button>
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="cursor-pointer"
+                >
+                  <FiSettings
+                    className="w-5 h-5 text-gray-600 hover:text-[#FF9361]"
+                    onClick={() => navigate("/settings")}
+                  />
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="cursor-pointer"
+                >
+                  <img
+                    src={user.profileImage || "/assets/img9.jpg"}
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full border-2 border-[#FF9361]"
+                    onClick={() => navigate("/profile")}
+                  />
+                </motion.div>
+              </div>
             ) : (
               <motion.button
                 whileHover={{ scale: 1.05 }}
