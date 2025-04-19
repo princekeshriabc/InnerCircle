@@ -58,11 +58,11 @@ const guideSchema = new mongoose.Schema(
       type: String,
       required: [true, "Description is required"],
       trim: true,
-      minlength: [20, "Description must be at least 20 characters long"],
+      // minlength: [20, "Description must be at least 20 characters long"],
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
       required: true,
     },
     isAnonymous: {
@@ -102,7 +102,7 @@ const guideSchema = new mongoose.Schema(
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "user",
       },
     ],
     views: {
@@ -113,7 +113,7 @@ const guideSchema = new mongoose.Schema(
       {
         user: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
+          ref: "user",
         },
         text: {
           type: String,

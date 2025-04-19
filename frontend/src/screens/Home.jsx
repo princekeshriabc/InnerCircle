@@ -25,7 +25,7 @@ const Home = () => {
       {/* {renderMainContent()} Call the function to render content */}
       <Hero />
       {/* <Zoom/> */}
-      <div className="hidden">{JSON.stringify(user)}</div>
+      <div className="">{JSON.stringify(user)}</div>
     </div>
   );
 }

@@ -1,8 +1,10 @@
 // components/Hero.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useUser } from "../context/user.context";
 
 const Hero = () => {
+  const { user } = useUser(); // Assuming you want to use the user context here
   const categories = [
     'Cloud Computing',
     'Cyber Security',
@@ -25,27 +27,34 @@ const Hero = () => {
   ];
 
   return (
-    <div className="pt-16 bg-white"> {/* pt-16 to account for fixed navbar */}
+    <div className="pt-16 bg-white">
+      {" "}
+      {/* pt-16 to account for fixed navbar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center justify-between py-12 lg:py-20">
           {/* Left Content */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             className="w-full lg:w-1/2 space-y-6 text-center lg:text-left"
           >
+            {user ? <div className="text-orange-500 text-lg font-semibold">
+              Welcome {user.name},
+            </div> : ""}
+            {console.log("The user context in home page is: ", user)}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#003B95] leading-tight">
-              Skill Your Way<br />
-              Up To Success<br />
+              Skill Your Way
+              <br />
+              Up To Success
+              <br />
               With Us
             </h1>
-            
             <p className="text-gray-600 text-lg md:text-xl">
-              Get the skills you need for<br />
+              Get the skills you need for
+              <br />
               the future of work.
             </p>
-
             {/* Categories */}
             <div className="flex flex-wrap gap-3 justify-center lg:justify-start pt-4">
               {categories.map((category, index) => (
@@ -61,7 +70,7 @@ const Hero = () => {
           </motion.div>
 
           {/* Right Content */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
@@ -91,12 +100,14 @@ const Hero = () => {
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 + (index * 0.2) }}
+                    transition={{ delay: 0.5 + index * 0.2 }}
                     className="bg-white rounded-lg shadow-lg p-4 flex items-center space-x-3 max-w-xs"
                   >
                     <span className="text-2xl">{course.icon}</span>
                     <div>
-                      <h3 className="font-semibold text-gray-800">{course.title}</h3>
+                      <h3 className="font-semibold text-gray-800">
+                        {course.title}
+                      </h3>
                       <p className="text-sm text-gray-500">{course.reviews}</p>
                     </div>
                     {index === 0 && (

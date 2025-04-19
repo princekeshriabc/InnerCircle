@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 // import { useNavigate } from "react-router-dom";
 
@@ -9,6 +10,14 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   // const navigate = useNavigate();
+
+  // Update setUser if local storage contains user data
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   // Add logout function to context
   const logout = async () => {
@@ -34,7 +43,7 @@ export const UserProvider = ({ children }) => {
       // localStorage.clear();
 
       // Navigate to home
-      // navigate("/");
+      // navigate("/home");
     } catch (error) {
       console.error("Logout error:", error);
     }

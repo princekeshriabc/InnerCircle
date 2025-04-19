@@ -37,9 +37,10 @@ const Login = () => {
       .then((response) => {
         console.log("Login successful:", response.data);
         localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.data));
         setUser(response.data.data);
         // Handle successful login (e.g., store token, redirect)
-        navigate('/');
+        navigate('/home');
       })
       .catch((error) => {
         console.error("Login error:", error);

@@ -1,6 +1,28 @@
 // services/guide.service.js
 import Guide from "../model/guide.model.js";
 import CustomError from "../utils/CustomError.js";
+import mongoose from "mongoose";
+
+export const getguideById = async (guideId) => {
+  try {
+    const guide = await Guide.findById(guideId).populate(
+      "createdBy",
+      "name email"
+    );
+
+    if (!guide) {
+      throw new CustomError("Guide not found", 404);
+    }
+
+    return guide;
+  } catch (error) {
+    // Handle specific Mongoose errors
+    if (error instanceof mongoose.Error.CastError) {
+      throw new CustomError("Invalid guide ID format", 400);
+    }
+    throw error;
+  }
+};
 
 export const createGuide = async (guideData) => {
   try {
@@ -39,6 +61,143 @@ export const createGuide = async (guideData) => {
       // Duplicate key error
       throw new CustomError("A guide with this topic already exists", 400);
     }
+    throw error;
+  }
+};
+
+// Get All Guides
+export const getAllGuides = async ({ category, difficulty, search }) => {
+  try {
+    let query = {};
+    
+    if (category) query.category = category;
+    if (difficulty) query.difficulty = difficulty;
+    if (search) {
+      query.$or = [
+        { topic: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+        { tags: { $regex: search, $options: 'i' } }
+      ];
+    }
+
+    const guides = await Guide.find(query)
+      .populate('createdBy', 'name email')
+      .sort({ createdAt: -1 });
+
+    return guides;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Get Single Guide
+export const getGuideById = async (guideId) => {
+  try {
+    const guide = await Guide.findById(guideId)
+      .populate('createdBy', 'name email');
+
+    if (!guide) {
+      throw new CustomError("Guide not found", 404);
+    }
+
+    // Increment views
+    guide.views += 1;
+    await guide.save();
+
+    return guide;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Update Guide
+export const updateGuide = async (guideId, updateData, userId) => {
+  try {
+    const guide = await Guide.findById(guideId);
+
+    if (!guide) {
+      throw new CustomError("Guide not found", 404);
+    }
+
+    if (guide.createdBy.toString() !== userId) {
+      throw new CustomError("Not authorized to update this guide", 403);
+    }
+
+    const updatedGuide = await Guide.findByIdAndUpdate(
+      guideId,
+      updateData,
+      { new: true, runValidators: true }
+    ).populate('createdBy', 'name email');
+
+    return updatedGuide;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Delete Guide
+export const deleteGuide = async (guideId, userId) => {
+  try {
+    const guide = await Guide.findById(guideId);
+
+    if (!guide) {
+      throw new CustomError("Guide not found", 404);
+    }
+
+    if (guide.createdBy.toString() !== userId) {
+      throw new CustomError("Not authorized to delete this guide", 403);
+    }
+
+    await guide.remove();
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Toggle Like
+export const toggleLike = async (guideId, userId) => {
+  try {
+    const guide = await Guide.findById(guideId);
+
+    if (!guide) {
+      throw new CustomError("Guide not found", 404);
+    }
+
+    const likeIndex = guide.likes.indexOf(userId);
+
+    if (likeIndex === -1) {
+      guide.likes.push(userId);
+    } else {
+      guide.likes.splice(likeIndex, 1);
+    }
+
+    await guide.save();
+    return guide;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Add Comment
+export const addComment = async (guideId, userId, text, isAnonymous = false) => {
+  try {
+    const guide = await Guide.findById(guideId);
+
+    if (!guide) {
+      throw new CustomError("Guide not found", 404);
+    }
+
+    guide.comments.push({
+      user: userId,
+      text,
+      isAnonymous
+    });
+
+    await guide.save();
+
+    return await Guide.findById(guideId)
+      .populate('comments.user', 'name email');
+  } catch (error) {
     throw error;
   }
 };

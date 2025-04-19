@@ -3,6 +3,7 @@ import { Router } from "express";
 import { body } from "express-validator";
 import * as guideController from "../controllers/guide.controller.js";
 import { authUser } from "../middleware/auth.middleware.js";
+import { validateMongoId } from "../middleware/validation.middleware.js";
 
 const router = Router();
 
@@ -50,7 +51,7 @@ router.post(
   createGuideValidation,
   guideController.createGuideController
 );
-// routes/guide.routes.js
+
 router.get('/test-auth', authUser, (req, res) => {
   res.json({
     success: true,
@@ -58,5 +59,30 @@ router.get('/test-auth', authUser, (req, res) => {
     user: req.user
   });
 });
+
+// Public routes
+router.get('/all',guideController.getAllGuidesController);
+
+router.get('/:id',validateMongoId, guideController.getGuideByIdController);
+
+router.put(
+  "/:id",
+  authUser,
+  validateMongoId,
+  createGuideValidation,
+  guideController.updateGuideController
+);
+
+router.delete("/:id", authUser,validateMongoId, guideController.deleteGuideController);
+
+router.post("/:id/like", authUser, guideController.toggleLikeController);
+
+router.post(
+  "/:id/comment",
+  authUser,
+  body("text").notEmpty().withMessage("Comment text is required"),
+  guideController.addCommentController
+);
+
 
 export default router;
