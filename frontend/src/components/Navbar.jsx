@@ -347,15 +347,44 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useUser } from "../context/user.context";
+import axios from "../config/axios";
 
 const Navbar = () => {
-  const { user, logout } = useUser();
+  const { user, setUser } = useUser();
   const navigate = useNavigate();
   // if(!user){
 
   //   return null;
-  // } 
+  // }
 
+  // Add logout function to context
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        // If no token, just clear local state
+        localStorage.clear();
+        return true;
+      }
+      // Call logout API
+      await axios.get("/users/logout", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Clear storage and state
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      setUser(null);
+      // localStorage.clear();
+
+      // Navigate to home
+      navigate("/home");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -371,7 +400,9 @@ const Navbar = () => {
               alt="Logo"
               className="h-8 w-8 rounded-full"
             />
-            <span className="text-xl font-bold text-[#FF9361]">Inner Circle</span>
+            <span className="text-xl font-bold text-[#FF9361]">
+              Inner Circle
+            </span>
           </Link>
 
           {/* Navigation */}
@@ -382,12 +413,12 @@ const Navbar = () => {
             >
               Guides
             </Link>
-            
+
             {user ? (
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => { logout(); }}
+                onClick= {handleLogout}
                 className="px-4 py-2 text-red-500 border border-red-500 rounded-md hover:bg-red-50"
               >
                 Logout

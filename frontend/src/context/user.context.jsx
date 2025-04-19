@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from "react";
 import { useEffect } from "react";
-import axios from "axios";
+import axios from "../config/axios";
 // import { useNavigate } from "react-router-dom";
 
 // Create the UserContext
@@ -19,38 +19,10 @@ export const UserProvider = ({ children }) => {
     }
   }, []);
 
-  // Add logout function to context
-  const logout = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        // If no token, just clear local state
-        localStorage.clear();
-        setUser(null);
-        return true;
-      }
-      // Call logout API
-      await axios.get("/users/logout", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      // Clear storage and state
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      setUser(null);
-      // localStorage.clear();
-
-      // Navigate to home
-      // navigate("/home");
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
+  
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout }}>
+    <UserContext.Provider value={{ user, setUser}}>
       {children}
     </UserContext.Provider>
   );
