@@ -4,6 +4,7 @@ import { UserContext } from '../context/user.context'
 import Navbar from '../components/Navbar'
 import Hero from '../components/Hero'
 import Zoom from '../components/Zoom'
+import WhocanJoin from '../components/home/WhocanJoin'
 
 const Home = () => {
   // const location = useLocation();
@@ -24,6 +25,7 @@ const Home = () => {
       {/* Add padding-top to account for fixed navbar */}
       {/* {renderMainContent()} Call the function to render content */}
       <Hero />
+      <WhocanJoin />
       {/* <Zoom/> */}
       <div className="">{JSON.stringify(user)}</div>
     </div>

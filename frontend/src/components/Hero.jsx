@@ -27,7 +27,7 @@ const Hero = () => {
   ];
 
   return (
-    <div className="pt-16 bg-white">
+    <div className="pt-16 ">
       {" "}
       {/* pt-16 to account for fixed navbar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,9 +39,13 @@ const Hero = () => {
             transition={{ duration: 0.5 }}
             className="w-full lg:w-1/2 space-y-6 text-center lg:text-left"
           >
-            {user ? <div className="text-orange-500 text-lg font-semibold">
-              Welcome {user.name},
-            </div> : ""}
+            {user ? (
+              <div className="text-[#003B95] text-lg font-semibold">
+                Welcome {user.name},
+              </div>
+            ) : (
+              ""
+            )}
             {console.log("The user context in home page is: ", user)}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#003B95] leading-tight">
               Skill Your Way
@@ -50,7 +54,7 @@ const Hero = () => {
               <br />
               With Us
             </h1>
-            <p className="text-gray-600 text-lg md:text-xl">
+            <p className="text-gray-700 text-lg md:text-xl">
               Get the skills you need for
               <br />
               the future of work.
@@ -79,7 +83,7 @@ const Hero = () => {
             <div className="relative">
               {/* Background Circles */}
               <div className="absolute inset-0 z-0">
-                <div className="absolute right-0 top-0 w-72 h-72 bg-[#FF9361] rounded-full"></div>
+                <div className="absolute right-0 top-0 w-72 h-72 bg-white rounded-full"></div>
                 <div className="absolute right-20 top-20 w-64 h-64 bg-[#003B95] rounded-full"></div>
               </div>
 
@@ -88,7 +92,7 @@ const Hero = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                src="/path-to-your-image.png" // Replace with actual image path
+                src="/hero.png" // Replace with actual image path
                 alt="Student learning"
                 className="relative z-10 max-w-md mx-auto"
               />
@@ -111,7 +115,7 @@ const Hero = () => {
                       <p className="text-sm text-gray-500">{course.reviews}</p>
                     </div>
                     {index === 0 && (
-                      <span className="absolute -top-2 right-2 bg-[#FF9361] text-white text-xs px-2 py-1 rounded-full">
+                      <span className="absolute -top-2 right-2 bg-[#003B95] text-white text-xs px-2 py-1 rounded-full">
                         Best seller
                       </span>
                     )}
