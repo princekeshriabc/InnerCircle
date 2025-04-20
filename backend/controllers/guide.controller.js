@@ -5,27 +5,6 @@ import { sendResponse } from "../utils/responseHandler.js";
 import { isValidObjectId } from "../utils/mongooseUtils.js";
 
 
-export const getguideByIdController = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    // Validate ObjectId
-    if (!isValidObjectId(id)) {
-      return sendResponse(res, 400, false, "Invalid guide ID format");
-    }
-
-    const guide = await guideService.getguideById(id);
-    return sendResponse(res, 200, true, "Guide fetched successfully", guide);
-  } catch (error) {
-    return sendResponse(
-      res,
-      error.statusCode || 500,
-      false,
-      error.message || "Error fetching guide"
-    );
-  }
-};
-
 export const createGuideController = async (req, res) => {
   try {
     // Validate request

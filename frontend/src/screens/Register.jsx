@@ -1,15 +1,15 @@
 // Register.jsx
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from '../config/axios';
-import {UserContext} from '../context/user.context';
+import axios from "../config/axios";
+import { UserContext } from "../context/user.context";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const {setUser} = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   //   const [formData, setFormData] = useState({
   //   name: "",
   //   email: "",
@@ -29,14 +29,18 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Find the domain of the email address
+    const emailDomain = email.split("@")[1];
+    console.log("Email domain:", emailDomain);
+
     // Add your Register logic here
     axios
       .post("/users/register", {
         name: username,
         email: email,
         password: password,
-      }
-      )
+        emailDomain: emailDomain,
+      })
       .then((response) => {
         console.log(response.data);
         localStorage.setItem("token", response.data.token);

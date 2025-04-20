@@ -1,6 +1,7 @@
 import { validationResult } from "express-validator";
 import * as userService from "../services/user.service.js";
 import userModel from "../model/user.model.js";
+import Organization from "../model/organization.model.js";
 import redisClient from "../services/redis.service.js";
 
 export const createUserController = async (req, res) => {
@@ -11,14 +12,34 @@ export const createUserController = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password } = req.body;
-    const user = await userService.createUser({ name, email, password });
+    const { name, email, password, emailDomain } = req.body;
+
+    // Checking for valid organization presence.
+    const organization = await Organization.findOne({
+      emailDomain: emailDomain,
+    });
+    console.log("Organization value:", organization);
+    if (!organization) {
+      // TODO: If organization is not found, redirect to "Purchase Plan" page. Will be implemented later.
+      return res.status(403).json({
+        success: false,
+        message: "This email domain is not associated with any organization.",
+      });
+    }
+
+    const user = await userService.createUser({
+      name,
+      email,
+      password,
+      organization: organization._id,
+    });
     const token = await user.generateJWT();
     // Remove password from response
     const userResponse = {
       _id: user._id,
       name: user.name,
       email: user.email,
+      organization: user.organization,
     };
 
     res.status(201).json({
@@ -45,7 +66,7 @@ export const loginUserController = async (req, res) => {
     const { email, password } = req.body;
     // Check if user exists
     const user = await userModel.findOne({ email }).select("+password");
-    if (!user) { 
+    if (!user) {
       return res.status(401).json({
         success: false,
         message: "Invalid credentials",
@@ -64,6 +85,7 @@ export const loginUserController = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      organizationId: user.organization,
       // password:user.password,
     };
 
@@ -82,13 +104,22 @@ export const loginUserController = async (req, res) => {
 };
 
 export const loginGoogleUserController = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  const { name, email, password } = req.body;
   try {
-    // Check if user exists
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { name, email, password, emailDomain } = req.body;
+    const organization = await Organization.findOne({
+      emailDomain: emailDomain,
+    });
+    if (!organization) {
+      // TODO: If organization is not found, redirect to "Purchase Plan" page. Will be implemented later.
+      return res.status(403).json({
+        success: false,
+        message: "This email domain is not associated with any organization.",
+      });
+    }
     const user = await userModel.findOne({ email }).select("+password");
     if (!user) {
       // Create a new user if not found
@@ -99,6 +130,7 @@ export const loginGoogleUserController = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        organization: user.organization,
       };
 
       return res.status(201).json({
@@ -114,6 +146,7 @@ export const loginGoogleUserController = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      organization: organization._id,
     };
 
     res.status(200).json({

@@ -1,17 +1,17 @@
 // Login.jsx
-import React, { useState ,useContext} from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from '../config/axios';
-import {UserContext} from '../context/user.context';
+import axios from "../config/axios";
+import { UserContext } from "../context/user.context";
 import { auth, provider } from "../hooks/firebase";
 import { signInWithPopup } from "firebase/auth";
-import CryptoJS from 'crypto-js';
+import CryptoJS from "crypto-js";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const {setUser} = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   // const [formData, setFormData] = useState({
   //   email: "",
   //   password: "",
@@ -36,44 +36,50 @@ const Login = () => {
       const user = result.user;
       const rawData = `${user.uid}:${user.email}`;
       const encryptedPassword = CryptoJS.SHA256(rawData).toString();
-      await axios.post('/users/login-google', {
+      const email = user.email;
+      const emailDomain = email.split("@")[1];
+      await axios
+        .post("/users/login-google", {
           name: user.displayName,
           email: user.email,
           password: encryptedPassword,
-        }
-      )
-      .then((response) => {
-        console.log("Google login successful after axios call:", response.data);
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.data));
-        setUser(response.data.data);
-        // Handle successful login (e.g., store token, redirect)
-        navigate('/home');
-      })
-      .catch((error) => {
-        console.error("Google login error after axios call:", error);
-      })
+          emailDomain: emailDomain,
+        })
+        .then((response) => {
+          console.log(
+            "Google login successful after axios call:",
+            response.data
+          );
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("user", JSON.stringify(response.data.data));
+          setUser(response.data.data);
+          // Handle successful login (e.g., store token, redirect)
+          navigate("/home");
+        })
+        .catch((error) => {
+          console.error("Google login error after axios call:", error);
+        });
     } catch (error) {
       console.error("Google login error:", error);
     }
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Add your login logic here
-    await axios.post('/users/login', {
-      email: email,
-      password: password,
-      // rememberMe: rememberMe,
-      }
-    )
+    await axios
+      .post("/users/login", {
+        email: email,
+        password: password,
+        // rememberMe: rememberMe,
+      })
       .then((response) => {
         console.log("Login successful:", response.data);
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.data));
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.data));
         setUser(response.data.data);
         // Handle successful login (e.g., store token, redirect)
-        navigate('/home');
+        navigate("/home");
       })
       .catch((error) => {
         console.error("Login error:", error);

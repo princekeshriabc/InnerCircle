@@ -10,6 +10,7 @@ router.post('/register',
     body('email').isEmail().withMessage('Invalid email address'),
     body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
     body('password').notEmpty().withMessage('Password is required'),
+    body('emailDomain').notEmpty().withMessage('Email domain is empty'),
 
     userController.createUserController);
 
@@ -23,6 +24,7 @@ router.post('/login-google',
     body('name').notEmpty().withMessage('Name is required'),
     body('email').isEmail().withMessage('Invalid email address'),
     body('password').notEmpty().withMessage('Password is required'),
+    body('emailDomain').notEmpty().withMessage('Email domain is empty'),
 
     userController.loginGoogleUserController);
 

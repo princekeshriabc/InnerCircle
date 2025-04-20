@@ -3,26 +3,6 @@ import Guide from "../model/guide.model.js";
 import CustomError from "../utils/CustomError.js";
 import mongoose from "mongoose";
 
-export const getguideById = async (guideId) => {
-  try {
-    const guide = await Guide.findById(guideId).populate(
-      "createdBy",
-      "name email"
-    );
-
-    if (!guide) {
-      throw new CustomError("Guide not found", 404);
-    }
-
-    return guide;
-  } catch (error) {
-    // Handle specific Mongoose errors
-    if (error instanceof mongoose.Error.CastError) {
-      throw new CustomError("Invalid guide ID format", 400);
-    }
-    throw error;
-  }
-};
 
 export const createGuide = async (guideData) => {
   try {

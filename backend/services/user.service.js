@@ -1,7 +1,7 @@
-import User from '../model/user.model.js';
+import User from "../model/user.model.js";
 
-export const createUser = async ({ name, email, password }) => {
-  if (!name || !email || !password) {
+export const createUser = async ({ name, email, password, organization }) => {
+  if (!name || !email || !password || !organization) {
     throw new Error("All fields are required");
   }
   // Check if user already exists
@@ -15,9 +15,10 @@ export const createUser = async ({ name, email, password }) => {
       name,
       email,
       password,
+      organization,
     });
     return user;
   } catch (error) {
     throw new Error(error.message);
   }
-}
+};
