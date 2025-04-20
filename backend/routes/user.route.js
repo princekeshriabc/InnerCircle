@@ -19,6 +19,14 @@ router.post('/login',
 
     userController.loginUserController);
 
+router.post('/login-google',
+    body('name').notEmpty().withMessage('Name is required'),
+    body('email').isEmail().withMessage('Invalid email address'),
+    body('password').notEmpty().withMessage('Password is required'),
+
+    userController.loginGoogleUserController);
+
+
 router.get('/profile', authMiddleware.authUser, userController.profileController);
 
 router.get('/logout', authMiddleware.authUser, userController.logoutController);

@@ -3,6 +3,9 @@ import React, { useState ,useContext} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from '../config/axios';
 import {UserContext} from '../context/user.context';
+import { auth, provider } from "../hooks/firebase";
+import { signInWithPopup } from "firebase/auth";
+import CryptoJS from 'crypto-js';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -25,10 +28,40 @@ const Login = () => {
   //   }));
   // };
 
+  const googleAuthLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      // const token = result.credential.accessToken;
+      console.log("Google login result:", result);
+      const user = result.user;
+      const rawData = `${user.uid}:${user.email}`;
+      const encryptedPassword = CryptoJS.SHA256(rawData).toString();
+      await axios.post('/users/login-google', {
+          name: user.displayName,
+          email: user.email,
+          password: encryptedPassword,
+        }
+      )
+      .then((response) => {
+        console.log("Google login successful after axios call:", response.data);
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.data));
+        setUser(response.data.data);
+        // Handle successful login (e.g., store token, redirect)
+        navigate('/home');
+      })
+      .catch((error) => {
+        console.error("Google login error after axios call:", error);
+      })
+    } catch (error) {
+      console.error("Google login error:", error);
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Add your login logic here
-    axios.post('/users/login', {
+    await axios.post('/users/login', {
       email: email,
       password: password,
       // rememberMe: rememberMe,
@@ -138,6 +171,7 @@ const Login = () => {
           <div className="space-y-3">
             <button
               type="button"
+              onClick={googleAuthLogin}
               className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
               <img

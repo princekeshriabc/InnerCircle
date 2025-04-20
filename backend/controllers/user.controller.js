@@ -79,13 +79,62 @@ export const loginUserController = async (req, res) => {
       message: error.message,
     });
   }
-}
+};
+
+export const loginGoogleUserController = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const { name, email, password } = req.body;
+  try {
+    // Check if user exists
+    const user = await userModel.findOne({ email }).select("+password");
+    if (!user) {
+      // Create a new user if not found
+      const user = await userService.createUser({ name, email, password });
+      const token = await user.generateJWT();
+      // Remove password from response
+      const userResponse = {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      };
+
+      return res.status(201).json({
+        success: true,
+        message: "User created successfully",
+        data: userResponse,
+        token,
+      });
+    }
+    // Generate JWT token
+    const token = await user.generateJWT();
+    const userResponse = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    };
+
+    res.status(200).json({
+      success: true,
+      message: "User logged in successfully",
+      data: userResponse,
+      token,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 export const profileController = async (req, res) => {
   // console.log(req.user);
   try {
     // const user = await userModel.findById(req.user._id).select("-password");
-    const user =req.user;
+    const user = req.user;
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -102,8 +151,8 @@ export const profileController = async (req, res) => {
       success: false,
       message: error.message,
     });
-  } 
-}
+  }
+};
 
 export const logoutController = async (req, res) => {
   try {
@@ -117,7 +166,7 @@ export const logoutController = async (req, res) => {
       });
     }
     // Add the token to the blacklist in Redis
-    await redisClient.set(token, 'logout', "EX", 60*60*24*30); // Token expires in 30 days
+    await redisClient.set(token, "logout", "EX", 60 * 60 * 24 * 30); // Token expires in 30 days
     res.status(200).json({
       success: true,
       message: "User logged out successfully",
@@ -128,4 +177,4 @@ export const logoutController = async (req, res) => {
       message: error.message,
     });
   }
-}
+};
