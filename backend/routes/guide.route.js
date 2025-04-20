@@ -13,8 +13,8 @@ const createGuideValidation = [
   body("description")
     .notEmpty()
     .withMessage("Description is required")
-    .isLength({ min: 20 })
-    .withMessage("Description must be at least 20 characters long")
+    .isLength({ min: 5 })
+    .withMessage("Description must be at least 5 characters long")
     .trim(),
   body("category")
     .notEmpty()

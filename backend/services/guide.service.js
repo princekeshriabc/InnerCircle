@@ -148,7 +148,7 @@ export const deleteGuide = async (guideId, userId) => {
       throw new CustomError("Not authorized to delete this guide", 403);
     }
 
-    await guide.remove();
+    await guide.deleteOne();
   } catch (error) {
     throw error;
   }
