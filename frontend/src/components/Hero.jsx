@@ -27,8 +27,7 @@ const Hero = () => {
   ];
 
   return (
-    <div className="pt-16 ">
-      {" "}
+    <div className="pt-16 bg-gradient-to-bl from-[#FF9361] via-[#fc8e57] to-[#261d77]">
       {/* pt-16 to account for fixed navbar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center justify-between py-12 lg:py-20">
@@ -54,7 +53,7 @@ const Hero = () => {
               <br />
               With Us
             </h1>
-            <p className="text-gray-700 text-lg md:text-xl">
+            <p className="text-white text-lg md:text-xl">
               Get the skills you need for
               <br />
               the future of work.
@@ -65,7 +64,7 @@ const Hero = () => {
                 <motion.span
                   key={index}
                   whileHover={{ scale: 1.05 }}
-                  className="px-4 py-2 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-gray-200 cursor-pointer"
+                  className="px-4 py-2 bg-[#f4d6c9] rounded-full text-sm text-gray-700 hover:bg-[gray-200] cursor-pointer"
                 >
                   {category}
                 </motion.span>
@@ -83,7 +82,7 @@ const Hero = () => {
             <div className="relative">
               {/* Background Circles */}
               <div className="absolute inset-0 z-0">
-                <div className="absolute right-0 top-0 w-72 h-72 bg-white rounded-full"></div>
+                <div className="absolute right-0 top-0 w-72 h-72 bg-[#f4c2ad] rounded-full"></div>
                 <div className="absolute right-20 top-20 w-64 h-64 bg-[#003B95] rounded-full"></div>
               </div>
 
@@ -105,7 +104,7 @@ const Hero = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 + index * 0.2 }}
-                    className="bg-white rounded-lg shadow-lg p-4 flex items-center space-x-3 max-w-xs"
+                    className="bg-[#f4d0c1] rounded-lg shadow-lg p-4 flex items-center space-x-3 max-w-xs"
                   >
                     <span className="text-2xl">{course.icon}</span>
                     <div>

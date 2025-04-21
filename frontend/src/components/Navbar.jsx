@@ -390,7 +390,7 @@ const Navbar = () => {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className="bg-white shadow-md fixed w-full top-0 z-50"
+      className="bg-[#f4c2ad] shadow-md fixed w-full top-0 z-50"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
@@ -401,7 +401,7 @@ const Navbar = () => {
               alt="Logo"
               className="h-8 w-8 rounded-full"
             />
-            <span className="text-xl font-bold text-[#FF9361]">
+            <span className="text-xl font-bold text-black">
               Inner Circle
             </span>
           </Link>
@@ -421,7 +421,18 @@ const Navbar = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={handleLogout}
-                  className="px-4 py-2 text-red-500 hover:border hover:border-red-500 rounded-md hover:bg-red-50"
+                  className="px-4 py-2 text-white text-base font-medium rounded-lg
+                bg-gradient-to-r from-black via-gray-700 to-blue-500
+                hover:from-black hover:via-gray-700 hover:to-blue-600
+                shadow-[0_1px_rgba(255,255,255,0.75)_inset]
+                before:absolute before:inset-0 
+                before:bg-[radial-gradient(141.42%_141.42%_at_100%_0%,rgba(255,255,255,0.4),rgba(255,255,255,0))]
+                before:rounded-lg
+                after:absolute after:inset-0 
+                after:bg-[radial-gradient(89.94%_89.94%_at_18.42%_15.79%,rgba(255,255,255,0.2),rgba(255,255,255,0))]
+                after:rounded-lg
+                transition-all duration-200 ease-in-out
+                text-shadow-[0_0_2px_rgba(0,0,0,0.2)]"
                 >
                   Logout
                 </motion.button>
@@ -453,7 +464,18 @@ const Navbar = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate("/login")}
-                className="px-4 py-2 bg-[#FF9361] text-white rounded-md hover:bg-[#ff7a41]"
+                className="px-4 py-2 text-white text-base font-medium rounded-lg
+                bg-gradient-to-r from-black via-gray-700 to-blue-500
+                hover:from-black hover:via-gray-700 hover:to-blue-600
+                shadow-[0_1px_rgba(255,255,255,0.75)_inset]
+                before:absolute before:inset-0 
+                before:bg-[radial-gradient(141.42%_141.42%_at_100%_0%,rgba(255,255,255,0.4),rgba(255,255,255,0))]
+                before:rounded-lg
+                after:absolute after:inset-0 
+                after:bg-[radial-gradient(89.94%_89.94%_at_18.42%_15.79%,rgba(255,255,255,0.2),rgba(255,255,255,0))]
+                after:rounded-lg
+                transition-all duration-200 ease-in-out
+                text-shadow-[0_0_2px_rgba(0,0,0,0.2)]"
               >
                 Login
               </motion.button>

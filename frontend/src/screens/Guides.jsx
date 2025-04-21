@@ -73,7 +73,7 @@ const Guides = () => {
             animate="show"
           >
             {guides.map((guide) => (
-              <GuideCard key={guide.id} guide={guide} />
+              <GuideCard key={guide._id} guide={guide} />
             ))}
           </motion.div>
         )}

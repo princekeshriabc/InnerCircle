@@ -5,6 +5,9 @@ import Navbar from '../components/Navbar'
 import Hero from '../components/Hero'
 import Zoom from '../components/Zoom'
 import WhocanJoin from '../components/home/WhocanJoin'
+import Testimonial from '../components/home/Testonomial';
+import GetStart from '../components/home/GetStart';
+import Features from '../components/home/Features';
 
 const Home = () => {
   // const location = useLocation();
@@ -26,8 +29,11 @@ const Home = () => {
       {/* {renderMainContent()} Call the function to render content */}
       <Hero />
       <WhocanJoin />
+      <Testimonial />
+      <Features />
+      <GetStart />
       {/* <Zoom/> */}
-      <div className="">{JSON.stringify(user)}</div>
+      {/* <div className="">{JSON.stringify(user)}</div> */}
     </div>
   );
 }
