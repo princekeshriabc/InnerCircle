@@ -410,7 +410,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-6">
             <Link
               to="/guides"
-              className="text-gray-600 hover:text-[#FF9361] transition-colors"
+              className="text-gray-600 hover:text-black font-bold transition-colors text-lg"
             >
               Guides
             </Link>
@@ -424,15 +424,8 @@ const Navbar = () => {
                   className="px-4 py-2 text-white text-base font-medium rounded-lg
                 bg-gradient-to-r from-black via-gray-700 to-blue-500
                 hover:from-black hover:via-gray-700 hover:to-blue-600
-                shadow-[0_1px_rgba(255,255,255,0.75)_inset]
-                before:absolute before:inset-0 
-                before:bg-[radial-gradient(141.42%_141.42%_at_100%_0%,rgba(255,255,255,0.4),rgba(255,255,255,0))]
-                before:rounded-lg
-                after:absolute after:inset-0 
-                after:bg-[radial-gradient(89.94%_89.94%_at_18.42%_15.79%,rgba(255,255,255,0.2),rgba(255,255,255,0))]
-                after:rounded-lg
                 transition-all duration-200 ease-in-out
-                text-shadow-[0_0_2px_rgba(0,0,0,0.2)]"
+                "
                 >
                   Logout
                 </motion.button>
@@ -442,7 +435,7 @@ const Navbar = () => {
                   className="cursor-pointer"
                 >
                   <FiSettings
-                    className="w-5 h-5 text-gray-600 hover:text-[#FF9361]"
+                    className="w-5 h-5 text-gray-600 hover:text-[#0a0909]"
                     onClick={() => navigate("/settings")}
                   />
                 </motion.div>
@@ -467,15 +460,9 @@ const Navbar = () => {
                 className="px-4 py-2 text-white text-base font-medium rounded-lg
                 bg-gradient-to-r from-black via-gray-700 to-blue-500
                 hover:from-black hover:via-gray-700 hover:to-blue-600
-                shadow-[0_1px_rgba(255,255,255,0.75)_inset]
-                before:absolute before:inset-0 
-                before:bg-[radial-gradient(141.42%_141.42%_at_100%_0%,rgba(255,255,255,0.4),rgba(255,255,255,0))]
-                before:rounded-lg
-                after:absolute after:inset-0 
-                after:bg-[radial-gradient(89.94%_89.94%_at_18.42%_15.79%,rgba(255,255,255,0.2),rgba(255,255,255,0))]
-                after:rounded-lg
+                
                 transition-all duration-200 ease-in-out
-                text-shadow-[0_0_2px_rgba(0,0,0,0.2)]"
+                "
               >
                 Login
               </motion.button>

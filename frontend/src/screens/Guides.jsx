@@ -36,7 +36,7 @@ const Guides = () => {
   };
 
   return (
-    <div className="min-h-scree py-12">
+    <div className="min-h-scree py-12 bg-gradient-to-bl from-[#f4d6c9] via-[#fc8e57] to-[#2a217c]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
           <motion.h1
@@ -50,7 +50,9 @@ const Guides = () => {
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
               to="/guides/create"
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200"
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md transition-colors duration-200 text-base font-medium 
+              bg-gradient-to-r from-black via-gray-700 to-blue-500
+             hover:from-black hover:via-gray-700 hover:to-blue-600 hover:bg-blue-600"
             >
               Create Guide
             </Link>
@@ -67,7 +69,7 @@ const Guides = () => {
           </div>
         ) : (
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 "
             variants={container}
             initial="hidden"
             animate="show"

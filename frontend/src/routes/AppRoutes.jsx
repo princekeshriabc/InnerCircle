@@ -10,6 +10,7 @@ import GuideDetail from "../screens/GuideDetail";
 import HomeUser from '../screens/HomeUser'
 import EditGuide from '../screens/EditGuide';
 import ProtectedRoute from '../components/ProtectedRoute'
+import Profile from '../screens/Profile';
 
 
 const AppRoutes = () => {
@@ -25,6 +26,7 @@ const AppRoutes = () => {
           <Route path="/guides/create" element={<ProtectedRoute><CreateGuide /></ProtectedRoute>} />
           <Route path="/guides/:id" element={<ProtectedRoute><GuideDetail /></ProtectedRoute>} />
           <Route path="/guides/edit/:id" element={<ProtectedRoute><EditGuide /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         </Routes>
       </MainLayout>
     </BrowserRouter>

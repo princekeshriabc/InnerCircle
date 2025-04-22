@@ -13,7 +13,8 @@ const GuideCard = ({ guide }) => {
     <motion.div
       variants={item}
       whileHover={{ y: -5 }}
-      className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+      className=" rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-gradient-to-r from-[#f3e6e0] via-[#f1dcd3] to-[#f4d7cb] hover:[#f5bda3] hover:via-blue-200 hover:to-[#f4c5b0]
+                                hover:bg-[#f5bda3]"
     >
       <div className="p-6">
         <div className="flex justify-between items-start mb-4">
