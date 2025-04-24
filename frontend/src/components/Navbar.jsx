@@ -401,13 +401,17 @@ const Navbar = () => {
               alt="Logo"
               className="h-8 w-8 rounded-full"
             />
-            <span className="text-xl font-bold text-black">
-              Inner Circle
-            </span>
+            <span className="text-xl font-bold text-black">Inner Circle</span>
           </Link>
 
           {/* Navigation */}
           <div className="flex items-center space-x-6">
+            <Link
+              to="/my-guides"
+              className="text-gray-600 hover:text-black font-bold transition-colors text-lg"
+            >
+              My Guides
+            </Link>
             <Link
               to="/guides"
               className="text-gray-600 hover:text-black font-bold transition-colors text-lg"

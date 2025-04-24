@@ -99,7 +99,7 @@ const CreateGuide = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gradient-to-bl from-[#f4d6c9] via-[#fc8e57] to-[#2a217c] py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

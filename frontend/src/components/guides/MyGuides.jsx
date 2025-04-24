@@ -1,11 +1,10 @@
-// screens/Guides.jsx
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import axios from "../config/axios";
+import axios from "../../config/axios";
 import { Link } from "react-router-dom";
-import GuideCard from "../components/guides/GuideCard";
+import GuideCard from "../guides/GuideCard";
 
-const Guides = () => {
+const MyGuides = () => {
   const [guides, setGuides] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,19 +12,23 @@ const Guides = () => {
     fetchGuides();
   }, []);
 
-   const updateGuide = (updatedGuide) => {
-     setGuides((prevGuides) =>
-       prevGuides.map((guide) =>
-         guide._id === updatedGuide._id ? updatedGuide : guide
-       )
-     );
+  const updateGuide = (updatedGuide) => {
+    setGuides((prevGuides) =>
+      prevGuides.map((guide) =>
+        guide._id === updatedGuide._id ? updatedGuide : guide
+      )
+    );
   };
-  
+
   const fetchGuides = async () => {
     try {
       const response = await axios.get("/guides/all");
       // console.log(response.data);
-      setGuides(response.data.data);
+      const currentUser = JSON.parse(localStorage.getItem("user"));
+      const userGuides = response.data.data.filter(
+        (guide) => guide.createdBy._id === currentUser._id
+      );
+      setGuides(userGuides);
     } catch (error) {
       console.error("Error fetching guides:", error);
     } finally {
@@ -46,7 +49,7 @@ const Guides = () => {
   return (
     <div className="min-h-scree py-12 bg-gradient-to-bl from-[#f4d6c9] via-[#fc8e57] to-[#2a217c]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center mb-8">
+        {/* <div className="flex justify-between items-center mb-8">
           <motion.h1
             className="text-3xl font-bold text-gray-900"
             initial={{ opacity: 0, y: -20 }}
@@ -65,7 +68,7 @@ const Guides = () => {
               Create Guide
             </Link>
           </motion.div>
-        </div>
+        </div> */}
 
         {loading ? (
           <div className="flex justify-center items-center h-64">
@@ -83,7 +86,11 @@ const Guides = () => {
             animate="show"
           >
             {guides.map((guide) => (
-              <GuideCard key={guide._id} guide={guide} updateGuide={updateGuide}/>
+              <GuideCard
+                key={guide._id}
+                guide={guide}
+                updateGuide={updateGuide}
+              />
             ))}
           </motion.div>
         )}
@@ -92,4 +99,4 @@ const Guides = () => {
   );
 };
 
-export default Guides;
+export default MyGuides;

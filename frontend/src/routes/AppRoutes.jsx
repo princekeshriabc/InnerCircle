@@ -11,6 +11,7 @@ import HomeUser from '../screens/HomeUser'
 import EditGuide from '../screens/EditGuide';
 import ProtectedRoute from '../components/ProtectedRoute'
 import Profile from '../screens/Profile';
+import MyGuides from '../components/guides/MyGuides'
 
 
 const AppRoutes = () => {
@@ -22,11 +23,47 @@ const AppRoutes = () => {
           <Route path="/home" element={<HomeUser />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/guides" element={<ProtectedRoute><Guides /></ProtectedRoute>} />
-          <Route path="/guides/create" element={<ProtectedRoute><CreateGuide /></ProtectedRoute>} />
-          <Route path="/guides/:id" element={<ProtectedRoute><GuideDetail /></ProtectedRoute>} />
-          <Route path="/guides/edit/:id" element={<ProtectedRoute><EditGuide /></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route
+            path="/guides"
+            element={
+              <ProtectedRoute>
+                <Guides />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/guides/create"
+            element={
+              <ProtectedRoute>
+                <CreateGuide />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/guides/:id"
+            element={
+              <ProtectedRoute>
+                <GuideDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/guides/edit/:id"
+            element={
+              <ProtectedRoute>
+                <EditGuide />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/my-guides" element={<MyGuides />} />
         </Routes>
       </MainLayout>
     </BrowserRouter>

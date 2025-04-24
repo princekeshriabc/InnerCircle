@@ -81,7 +81,7 @@ export const getGuideById = async (guideId) => {
     }
 
     // Increment views
-    guide.views += 1;
+    guide.views += 1/2;
     await guide.save();
 
     return guide;
