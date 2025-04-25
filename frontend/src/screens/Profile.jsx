@@ -67,7 +67,7 @@ const Profile = () => {
             key="my-guides"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="p-24 text-center"
+            className="text-center"
           >
             <MyGuides />
           </motion.div>

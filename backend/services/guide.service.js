@@ -62,6 +62,7 @@ export const getAllGuides = async ({ category, difficulty, search }) => {
 
     const guides = await Guide.find(query)
       .populate('createdBy', 'name email')
+      .populate('comments.user', 'name')
       .sort({ createdAt: -1 });
 
     return guides;
@@ -74,7 +75,8 @@ export const getAllGuides = async ({ category, difficulty, search }) => {
 export const getGuideById = async (guideId) => {
   try {
     const guide = await Guide.findById(guideId)
-      .populate('createdBy', 'name email');
+      .populate('createdBy', 'name email')
+      .populate('comments.user', 'name');
 
     if (!guide) {
       throw new CustomError("Guide not found", 404);
