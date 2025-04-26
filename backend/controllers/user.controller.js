@@ -85,7 +85,7 @@ export const loginUserController = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      organizationId: user.organization,
+      organization: user.organization,
       // password:user.password,
     };
 
@@ -123,7 +123,7 @@ export const loginGoogleUserController = async (req, res) => {
     const user = await userModel.findOne({ email }).select("+password");
     if (!user) {
       // Create a new user if not found
-      const user = await userService.createUser({ name, email, password });
+      const user = await userService.createUser({ name, email, password, organization });
       const token = await user.generateJWT();
       // Remove password from response
       const userResponse = {

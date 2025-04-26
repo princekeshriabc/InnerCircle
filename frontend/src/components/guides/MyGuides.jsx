@@ -26,7 +26,7 @@ const MyGuides = () => {
       // console.log(response.data);
       const currentUser = JSON.parse(localStorage.getItem("user"));
       const userGuides = response.data.data.filter(
-        (guide) => guide.createdBy._id === currentUser._id
+        (guide) => guide.createdBy?._id == currentUser._id
       );
       setGuides(userGuides);
     } catch (error) {

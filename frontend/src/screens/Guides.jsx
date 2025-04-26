@@ -26,7 +26,7 @@ const Guides = () => {
       const response = await axios.get("/guides/all");
       const currentUser = JSON.parse(localStorage.getItem("user"));
       const userGuides = response.data.data.filter(
-        (guide) => guide.organization == currentUser.organizationId
+        (guide) => guide.organization?.toString() === currentUser.organization
       );
       // console.log(response.data);
       setGuides(userGuides);

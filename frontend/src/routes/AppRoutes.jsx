@@ -12,6 +12,7 @@ import EditGuide from '../screens/EditGuide';
 import ProtectedRoute from '../components/ProtectedRoute'
 import Profile from '../screens/Profile';
 import MyGuides from '../components/guides/MyGuides'
+import PurchasePlan from '../screens/PurchasePlan';
 
 
 const AppRoutes = () => {
@@ -64,6 +65,7 @@ const AppRoutes = () => {
             }
           />
           <Route path="/my-guides" element={<MyGuides />} />
+          <Route path="/purchase-plan" element={<PurchasePlan />} />
         </Routes>
       </MainLayout>
     </BrowserRouter>
