@@ -13,7 +13,8 @@ export const createGuide = async (guideData) => {
       !guideData.description ||
       !guideData.category ||
       !guideData.chapters ||
-      !guideData.createdBy
+      !guideData.createdBy ||
+      !guideData.organization
     ) {
       throw new CustomError("Missing required fields", 400);
     }
@@ -83,7 +84,7 @@ export const getGuideById = async (guideId) => {
     }
 
     // Increment views
-    guide.views += 1/2;
+    guide.views += 1;
     await guide.save();
 
     return guide;

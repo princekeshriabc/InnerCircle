@@ -24,8 +24,12 @@ const Guides = () => {
   const fetchGuides = async () => {
     try {
       const response = await axios.get("/guides/all");
+      const currentUser = JSON.parse(localStorage.getItem("user"));
+      const userGuides = response.data.data.filter(
+        (guide) => guide.organization == currentUser.organizationId
+      );
       // console.log(response.data);
-      setGuides(response.data.data);
+      setGuides(userGuides);
     } catch (error) {
       console.error("Error fetching guides:", error);
     } finally {
@@ -42,7 +46,7 @@ const Guides = () => {
       },
     },
   };
-
+  // cosole.log(guides);
   return (
     <div className="min-h-scree py-12 bg-gradient-to-bl from-[#f4d6c9] via-[#fc8e57] to-[#2a217c]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

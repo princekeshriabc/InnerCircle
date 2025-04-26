@@ -26,6 +26,7 @@ export const createGuideController = async (req, res) => {
       isAnonymous: req.body.isAnonymous || false,
       status: req.body.status || "published",
       createdBy: req.user.id,
+      organization: req.user.organization,
     };
 
     const guide = await guideService.createGuide(guideData);

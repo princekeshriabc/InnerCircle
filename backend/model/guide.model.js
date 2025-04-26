@@ -130,6 +130,11 @@ const guideSchema = new mongoose.Schema(
         },
       },
     ],
+    organization: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "organization",
+      required: false,
+    },
   },
   {
     timestamps: true,
