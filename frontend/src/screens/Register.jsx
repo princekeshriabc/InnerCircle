@@ -3,6 +3,7 @@ import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../config/axios";
 import { UserContext } from "../context/user.context";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -10,6 +11,8 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const { setUser } = useContext(UserContext);
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   //   const [formData, setFormData] = useState({
   //   name: "",
   //   email: "",
@@ -49,6 +52,11 @@ const Register = () => {
         navigate("/");
       })
       .catch((error) => {
+        const errorMsg =
+          error.response?.data?.message ||
+          error.message ||
+          "An error occurred during registration";
+        setError(errorMsg);
         console.error("Register error:", error);
         // Handle register error (e.g., show error message)
       });
@@ -99,7 +107,7 @@ const Register = () => {
             />
           </div>
 
-          <div>
+          <div className="relative">
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
@@ -109,15 +117,27 @@ const Register = () => {
             <input
               id="password"
               name="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               autoComplete="current-password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 pr-10"
             />
+            <button
+              type="button"
+              tabIndex={-1}
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute top-9 right-3 flex items-center justify-center p-1 focus:outline-none"
+            >
+              {showPassword ? (
+                <EyeSlashIcon className="h-5 w-5 text-gray-400" />
+              ) : (
+                <EyeIcon className="h-5 w-5 text-gray-400" />
+              )}
+            </button>
           </div>
-
+          {error && <div className="text-red-600 text-sm mt-2">{error}</div>}
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input

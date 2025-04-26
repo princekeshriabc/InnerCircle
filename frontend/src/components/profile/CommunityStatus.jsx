@@ -21,7 +21,7 @@ const CommunityStatus = () => {
       const response = await axios.get("/guides/all");
       const currentUser = JSON.parse(localStorage.getItem("user"));
       const userGuides = response.data.data.filter(
-        (guide) => guide.createdBy._id === currentUser._id
+        (guide) => guide.createdBy?._id === currentUser._id
       );
 
       const calculatedStats = userGuides.reduce(
