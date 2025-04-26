@@ -381,7 +381,7 @@ const Navbar = () => {
       // localStorage.clear();
 
       // Navigate to home
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       console.error("Logout error:", error);
     }

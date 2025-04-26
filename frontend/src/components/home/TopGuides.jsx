@@ -1,9 +1,27 @@
 // components/Testimonial.jsx
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import axios from "../../config/axios";
 
 const TopGuides = () => {
   const scrollContainerRef = useRef(null);
+  const [organizationName, setOrganizationName] = useState("");
+
+  useEffect(() => {
+    const fetchOrganization = async () => {
+      try {
+        const currentUser = JSON.parse(localStorage.getItem("user"));
+        const organizationId = currentUser.organization;
+
+        const response = await axios.get(`/organization/${organizationId}`);
+        setOrganizationName(response.data.data.name); // 👈 Set the name directly
+      } catch (error) {
+        console.error("Error fetching organization:", error);
+      }
+    };
+
+    fetchOrganization();
+  }, []);
     
   const testimonials = [
     {
@@ -74,7 +92,7 @@ const TopGuides = () => {
         <h2 className="text-5xl font-bold text-[#FF9361] mb-4">
                   Here's what people from 
                   <br />
-                  IIIT Raichur are Learning
+                  {organizationName} are Learning
         </h2>
         <p className="text-xl text-gray-400">
           Don't take our word for it - listen to what

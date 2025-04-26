@@ -69,6 +69,18 @@ const MyGuides = () => {
             </Link>
           </motion.div>
         </div> */}
+        <div className="flex justify-end mb-8">
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link
+              to="/guides/create"
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md transition-colors duration-200 text-base font-medium 
+              bg-gradient-to-r from-black via-gray-700 to-blue-500
+             hover:from-black hover:via-gray-700 hover:to-blue-600 hover:bg-blue-600"
+            >
+              Create Guide
+            </Link>
+          </motion.div>
+        </div>
 
         {loading ? (
           <div className="flex justify-center items-center h-64">
