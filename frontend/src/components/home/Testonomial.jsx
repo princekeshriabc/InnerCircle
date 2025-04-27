@@ -12,7 +12,7 @@ const Testimonial = () => {
       username: "@RyanCarniato",
       avatar: "/path-to-ryan-avatar.jpg",
       content:
-        "I'm loving what Vite enables. We've found building SolidStart that it is less a metaframework but a system of symbiotic Vite plugins. While built with SolidJS in mind, they should scale from our simplest template to opinionated starter. We're building an ecosystem on Vite.",
+        "The intuitive design and seamless communication features have made our team more engaged, motivated, and aligned towards common goals.",
     },
     {
       id: 2,
@@ -20,7 +20,7 @@ const Testimonial = () => {
       username: "@markdalgleish",
       avatar: "/path-to-mark-avatar.jpg",
       content:
-        "It's also a great platform to build a framework on since it provides a pluggable dev environment. Community is amazing too.",
+        "Having a central space for organizational knowledge has reduced misunderstandings and helped our team work together more efficiently across departments.",
     },
     {
       id: 3,
@@ -28,7 +28,7 @@ const Testimonial = () => {
       username: "@dalmaer",
       avatar: "/path-to-dion-avatar.jpg",
       content:
-        "I am so excited to see so many great frameworks teaming up on top of vite. So many will benefit. ❤️ to the vite team.",
+        "With structured guides and clear workflows, onboarding new team members has become much smoother and faster, saving valuable time for everyone.",
     },
     {
       id: 4,
@@ -36,14 +36,14 @@ const Testimonial = () => {
       username: "@_developit",
       avatar: "/path-to-jason-avatar.jpg",
       content:
-        "Every time I suspect I've hit the bounds of what Vite can do, I end up being wrong.",
+        "The app has fostered a positive learning culture where team members freely share insights and best practices, boosting both productivity and morale.",
     },
     {
       id: 5,
       name: "Christoph Nakazawa",
       username: "@cpojer",
       avatar: "/path-to-christoph-avatar.jpg",
-      content: "Vite is gonna eat the (JavaScript) world.",
+      content: "Our team collaboration has improved dramatically since using this app — creating, sharing, and managing guides has made knowledge easily accessible to everyone.",
     },
   ];
 

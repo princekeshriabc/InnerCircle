@@ -7,6 +7,7 @@ import Popup from "./Popup";
 const GetStart = () => {
     const navigate = useNavigate();
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const user = JSON.parse(localStorage.getItem("user"));
     const handlePopupSubmit = (formData) => {
       // Handle form submission here
       console.log("Form submitted:", formData);
@@ -71,6 +72,7 @@ const GetStart = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex justify-center"
           >
+          {!user ?
             <motion.button
               whileHover={{
                 scale: 1.05,
@@ -93,6 +95,7 @@ const GetStart = () => {
             >
               Get Started
             </motion.button>
+          : ""}
           </motion.div>
         </div>
       </div>
