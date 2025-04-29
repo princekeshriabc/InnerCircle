@@ -58,6 +58,9 @@ const Register = () => {
           "An error occurred during registration";
         setError(errorMsg);
         console.error("Register error:", error);
+        if (error.response.data.message == "This email domain is not associated with any organization.") {
+          navigate("/purchase-plan");
+        }
         // Handle register error (e.g., show error message)
       });
   };
@@ -156,14 +159,14 @@ const Register = () => {
               </label>
             </div>
 
-            <div className="text-sm">
+            {/* <div className="text-sm">
               <a
                 href="#"
                 className="font-medium text-blue-600 hover:text-blue-500"
               >
                 Forgot your password?
               </a>
-            </div>
+            </div> */}
           </div>
 
           <div>

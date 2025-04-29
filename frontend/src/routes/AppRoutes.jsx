@@ -13,6 +13,10 @@ import ProtectedRoute from '../components/ProtectedRoute'
 import Profile from '../screens/Profile';
 import MyGuides from '../components/guides/MyGuides'
 import PurchasePlan from '../screens/PurchasePlan';
+import Project from '../screens/Project';
+import ChatSection from '../screens/ChatSection';
+import ForgotPassword from '../components/ForgotPassword';
+import ResetPassword from '../components/ResetPassword';
 
 
 const AppRoutes = () => {
@@ -64,8 +68,19 @@ const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
-          <Route path="/my-guides" element={<MyGuides />} />
+          <Route
+            path="/my-guides"
+            element={
+              <ProtectedRoute>
+                <MyGuides />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/purchase-plan" element={<PurchasePlan />} />
+          <Route path="/project" element={<Project />} />
+          <Route path="/chatsection" element={<ChatSection />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
         </Routes>
       </MainLayout>
     </BrowserRouter>

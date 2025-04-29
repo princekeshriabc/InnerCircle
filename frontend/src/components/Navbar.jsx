@@ -406,6 +406,14 @@ const Navbar = () => {
 
           {/* Navigation */}
           <div className="flex items-center space-x-6">
+            <span
+              onClick={() =>
+                window.open("/project", "_blank", "noopener,noreferrer")
+              }
+              className="text-gray-600 hover:text-black font-bold transition-colors text-lg cursor-pointer"
+            >
+              Projects
+            </span>
             <Link
               to="/my-guides"
               className="text-gray-600 hover:text-black font-bold transition-colors text-lg"

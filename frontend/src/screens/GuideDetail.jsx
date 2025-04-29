@@ -1,7 +1,6 @@
 // screens/GuideDetail.jsx
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronDownIcon,
@@ -20,6 +19,10 @@ const GuideDetail = () => {
   const navigate = useNavigate();
   // Keep track of all open chapters in an array
   const [openChapters, setOpenChapters] = useState([]);
+
+  // Selected content for modal popup
+  const [selectedContent, setSelectedContent] = useState(null);
+
   // Refs for scroll containers
   const scrollContainers = useRef({});
 
@@ -54,8 +57,6 @@ const GuideDetail = () => {
 
         // Now check the user after guide is set
         const user = JSON.parse(localStorage.getItem("user"));
-        // console.log("user:", user);
-        // console.log("fetched guide:", fetchedGuide);
 
         if (user && fetchedGuide && fetchedGuide.createdBy._id === user._id) {
           setIsCurrentUser(true);
@@ -81,6 +82,32 @@ const GuideDetail = () => {
       navigate("/guides");
     } catch (error) {
       console.error("Error deleting guide:", error);
+    }
+  };
+
+  // Helper: Check if link is YouTube
+  const isYouTubeLink = (url) => {
+    return /(youtube\.com|youtu\.be)/.test(url);
+  };
+
+  // Helper: Get YouTube embed URL from link
+  const getYouTubeEmbedUrl = (url) => {
+    try {
+      const urlObj = new URL(url);
+      let videoId = "";
+
+      if (urlObj.hostname === "youtu.be") {
+        videoId = urlObj.pathname.slice(1);
+      } else if (urlObj.hostname.includes("youtube.com")) {
+        videoId = urlObj.searchParams.get("v");
+      }
+
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+      return null;
+    } catch (error) {
+      return null;
     }
   };
 
@@ -117,8 +144,7 @@ const GuideDetail = () => {
                   className="px-4 py-2 text-white text-base font-medium rounded-lg
                                 bg-gradient-to-r from-black via-gray-700 to-blue-500
                                 hover:from-black hover:via-gray-700 hover:to-blue-600
-                                hover:bg-blue-600 transition-colors duration-200 flex items-center
-                                "
+                                hover:bg-blue-600 transition-colors duration-200 flex items-center"
                 >
                   <svg
                     className="w-4 h-4 mr-2"
@@ -135,27 +161,6 @@ const GuideDetail = () => {
                   </svg>
                   Edit
                 </motion.button>
-                {/* <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleUpdate}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 flex items-center"
-                >
-                  <svg
-                    className="w-4 h-4 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                    />
-                  </svg>
-                  Edit
-                </motion.button> */}
 
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -186,39 +191,30 @@ const GuideDetail = () => {
           <p className="text-gray-700 mb-4">
             Description : {guide.description}
           </p>
-          <div className="text-sm text-gray-800 font-bold">
-            By {guide.isAnonymous ? "Anonymous" : guide.createdBy.name}
+          <div className="flex items-center justify-between mb-6">
+            <div className="text-sm text-gray-800 font-bold">
+              By {guide.isAnonymous ? "Anonymous" : guide.createdBy.name}
+            </div>
+            <button
+              onClick={() => {
+                if (openChapters.length === (guide?.chapters.length || 0)) {
+                  setOpenChapters([]);
+                } else {
+                  setOpenChapters(guide.chapters.map((_, idx) => idx));
+                }
+              }}
+              className="px-4 py-2 text-white text-base font-medium rounded-lg
+                                bg-gradient-to-r from-black via-gray-700 to-blue-500
+                                hover:from-black hover:via-gray-700 hover:to-blue-600
+                                hover:bg-blue-600 transition-colors duration-200"
+            >
+              {openChapters.length === (guide?.chapters.length || 0)
+                ? "Collapse All"
+                : "Expand All"}
+            </button>
           </div>
         </div>
-        {/* <div className="space-y-8">
-        {guide.chapters.map((chapter, index) => (
-          <div key={index} className="border-b pb-8">
-            <h2 className="text-2xl font-semibold mb-4">
-              {index + 1}. {chapter.chapterTitle}
-            </h2>
-            <div className="space-y-6">
-              {chapter.content.map((content, contentIndex) => (
-                <div key={contentIndex} className="ml-4">
-                  <h3 className="text-xl font-medium mb-2">
-                    {content.subtopic}
-                  </h3>
-                  <p className="text-gray-700 mb-2">{content.explanation}</p>
-                  {content.link && (
-                    <a
-                      href={content.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 hover:text-blue-600"
-                    >
-                      Learn More →
-                    </a>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div> */}
+
         <div className="space-y-4">
           {guide.chapters.map((chapter, index) => (
             <div key={index} className="border rounded-lg overflow-hidden">
@@ -281,12 +277,13 @@ const GuideDetail = () => {
                             initial={{ x: 50, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: contentIndex * 0.1 }}
-                            className="flex-shrink-0 w-80 bg-[#f8d3c2] rounded-lg shadow-md p-4 border scroll-snap-center"
+                            className="flex-shrink-0 w-80 bg-[#f8d3c2] rounded-lg shadow-md p-4 border scroll-snap-center cursor-pointer"
+                            onClick={() => setSelectedContent(content)}
                           >
                             <h3 className="text-lg font-medium text-gray-800 mb-3">
                               {content.subtopic}
                             </h3>
-                            <p className="text-gray-600 mb-4 line-clamp-3">
+                            <p className="text-gray-600 mb-4 line-clamp-3 hover:line-clamp-none">
                               {content.explanation}
                             </p>
                             {content.link && (
@@ -295,6 +292,7 @@ const GuideDetail = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center text-blue-500 hover:text-blue-600 transition-colors"
+                                onClick={(e) => e.stopPropagation()} // Prevent modal opening when clicking the link itself
                               >
                                 Learn More
                                 <svg
@@ -322,6 +320,60 @@ const GuideDetail = () => {
             </div>
           ))}
         </div>
+
+        {/* Modal Popup for selected content */}
+        {selectedContent && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 px-4"
+            onClick={() => setSelectedContent(null)}
+          >
+            <div
+              className="bg-[#f8d3c2] rounded-lg max-w-3xl w-full p-6 relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-2xl font-bold"
+                onClick={() => setSelectedContent(null)}
+                aria-label="Close modal"
+              >
+                &times;
+              </button>
+
+              <h2 className="text-2xl font-bold mb-4">
+                {selectedContent.subtopic}
+              </h2>
+              <p className="mb-4 whitespace-pre-wrap">
+                {selectedContent.explanation}
+              </p>
+
+              {selectedContent.link && (
+                <>
+                  {isYouTubeLink(selectedContent.link) ? (
+                    <div className="aspect-w-16 aspect-h-9">
+                      <iframe
+                        src={getYouTubeEmbedUrl(selectedContent.link)}
+                        title="YouTube video player"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full h-64 md:h-96 rounded-lg"
+                      />
+                    </div>
+                  ) : (
+                    <a
+                      href={selectedContent.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      Visit Link
+                    </a>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Delete Confirmation Modal */}
         {isDeleteModalOpen && (
@@ -361,35 +413,35 @@ const GuideDetail = () => {
 export default GuideDetail;
 
 // console.log("isCurrentUser:", isCurrentUser);
-  // const fetchGuide = async () => {
-  //   try {
-  //     const response = await axios.get(`/guides/${id}`);
-  //     setGuide(response.data.data);
-  //     console.log("guide after set:", guide);
-  //   } catch (error) {
-  //     console.error("Error fetching guide:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+// const fetchGuide = async () => {
+//   try {
+//     const response = await axios.get(`/guides/${id}`);
+//     setGuide(response.data.data);
+//     console.log("guide after set:", guide);
+//   } catch (error) {
+//     console.error("Error fetching guide:", error);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
 
-  //  const checkCurrentUser = async () => {
-  //   try {
-  //     const user = JSON.parse(localStorage.getItem('user')); // Assuming you store user data in localStorage
-  //     console.log("user:",user);
-  //     console.log("guide in curr user:",guide);
-  //     if (guide && user && guide.createdBy._id === user._id) {
-  //       console.log("isCurrentUser set:", isCurrentUser);
-  //       setIsCurrentUser(true);
-  //     }
-  //     // console.log("isCurrentUser:", isCurrentUser);
-  //   } catch (error) {
-  //     console.error("Error checking user:", error);
-  //   }
-  //      };
-  // console.log("isCurrentUser x:", isCurrentUser);
+//  const checkCurrentUser = async () => {
+//   try {
+//     const user = JSON.parse(localStorage.getItem('user')); // Assuming you store user data in localStorage
+//     console.log("user:",user);
+//     console.log("guide in curr user:",guide);
+//     if (guide && user && guide.createdBy._id === user._id) {
+//       console.log("isCurrentUser set:", isCurrentUser);
+//       setIsCurrentUser(true);
+//     }
+//     // console.log("isCurrentUser:", isCurrentUser);
+//   } catch (error) {
+//     console.error("Error checking user:", error);
+//   }
+//      };
+// console.log("isCurrentUser x:", isCurrentUser);
 // console.log("guide x:", guide);
-  
+
 // screens/GuideDetail.jsx
 // import React, { useState, useEffect } from "react";
 // import { useParams, useNavigate } from "react-router-dom";
@@ -474,7 +526,7 @@ export default GuideDetail;
 //           </span>
 //           <span className="text-gray-500">{guide.difficulty}</span>
 //         </div>
-        
+
 //         <div className="flex justify-between items-center mb-4">
 //           <h1 className="text-3xl font-bold">{guide.topic}</h1>
 //           {console.log(isCurrentUser)}

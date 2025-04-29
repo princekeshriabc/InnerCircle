@@ -4,6 +4,8 @@ import connectDB from "./db/db.js";
 import userRoutes from "./routes/user.route.js";
 import guideRoutes from "./routes/guide.route.js";
 import organizationRoutes from "./routes/organization.route.js";
+import projectRoutes from "./routes/project.route.js";
+import aiRoutes from "./routes/ai.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 connectDB(); // Connect to MongoDB
@@ -20,6 +22,8 @@ app.use(cookieParser()); // Cookie parser middleware
 app.use("/api/users", userRoutes); // User routes
 app.use("/api/guides", guideRoutes); // Guide routes
 app.use("/api/organization", organizationRoutes); // Organization routes
+app.use("/api/projects", projectRoutes);
+app.use("/api/ai", aiRoutes); // AI routes
 
 // Import routes
 app.get("/", (req, res) => {

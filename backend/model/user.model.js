@@ -36,6 +36,13 @@ const userSchema = new mongoose.Schema(
       ref: "organization",
       required: false,
     },
+    resetPasswordToken: {
+      type: String,
+      select: false,
+    },
+    resetPasswordExpire: {
+      type: Date,
+    },
   },
   {
     timestamps: true,

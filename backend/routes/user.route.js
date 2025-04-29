@@ -32,5 +32,14 @@ router.post('/login-google',
 router.get('/profile', authMiddleware.authUser, userController.profileController);
 
 router.get('/logout', authMiddleware.authUser, userController.logoutController);
+router.get(
+  "/all",
+  authMiddleware.authUser,
+  userController.getAllUsersController
+);
+
+router.post("/forgot-password", userController.forgotPasswordController);
+router.post("/reset-password/:token", userController.resetPasswordController);
+
 
 export default router;

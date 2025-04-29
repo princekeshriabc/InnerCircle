@@ -22,3 +22,10 @@ export const createUser = async ({ name, email, password, organization }) => {
     throw new Error(error.message);
   }
 };
+
+export const getAllUsers = async ({ userId }) => {
+  const users = await User.find({
+    _id: { $ne: userId },
+  });
+  return users;
+};

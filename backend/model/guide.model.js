@@ -52,7 +52,6 @@ const guideSchema = new mongoose.Schema(
       type: String,
       required: [true, "Topic is required"],
       trim: true,
-      unique: true,
     },
     description: {
       type: String,
