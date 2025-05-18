@@ -397,7 +397,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <img
-              src="/assets/img9.jpg"
+              src="/channels4_profile.jpg"
               alt="Logo"
               className="h-8 w-8 rounded-full"
             />
@@ -457,7 +457,7 @@ const Navbar = () => {
                   className="cursor-pointer"
                 >
                   <img
-                    src={user.profileImage || "/assets/img9.jpg"}
+                    src={user.profileImage || "/channels4_profile.jpg"}
                     alt="Profile"
                     className="w-8 h-8 rounded-full border-2 border-[#FF9361]"
                     onClick={() => navigate("/profile")}
