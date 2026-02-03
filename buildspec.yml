@@ -1,0 +1,39 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing dependencies"
+
+  pre_build:
+    commands:
+      - echo "Fetching frontend env from SSM"
+      - export VITE_API_URL=$(aws ssm get-parameter --region us-east-1 --name "/prod/frontend/VITE_API_URL" --query "Parameter.Value" --output text)
+      - export VITE_API_URL_P=$(aws ssm get-parameter --region us-east-1 --name "/prod/frontend/VITE_API_URL_P" --query "Parameter.Value" --output text)
+      - export VITE_FIREBASE_API_KEY=$(aws ssm get-parameter --region us-east-1 --name "/prod/frontend/VITE_FIREBASE_API_KEY" --query "Parameter.Value" --output text)
+
+  build:
+    commands:
+      - echo "Building frontend"
+      - cd frontend
+      - npm install
+      - npm run build
+      - cd ..
+
+      - echo "Preparing backend"
+      - cd backend
+      - npm install
+      - cd ..
+
+  post_build:
+    commands:
+      - echo "Build completed successfully"
+
+artifacts:
+  files:
+    - frontend/dist/**/*
+    - backend/**/*
+    - scripts/**/*
+  discard-paths: no
