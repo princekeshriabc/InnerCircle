@@ -1,5 +1,5 @@
 resource "aws_instance" "app_server" {
-  ami                    = "ami-0c02fb55956c7d316"
+  ami                    = "ami-0532be01f26a3de55"
   instance_type          = var.instance_type
   key_name               = var.key_name
   iam_instance_profile   = aws_iam_instance_profile.ec2_profile.name
