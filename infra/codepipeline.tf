@@ -7,6 +7,9 @@ resource "aws_codepipeline" "pipeline" {
     type     = "S3"
   }
 
+  ################
+  # SOURCE STAGE
+  ################
   stage {
     name = "Source"
 
@@ -23,6 +26,28 @@ resource "aws_codepipeline" "pipeline" {
         Repo       = var.github_repo
         Branch     = var.github_branch
         OAuthToken = var.github_token
+      }
+    }
+  }
+
+  ################
+  # DEPLOY STAGE (SSM)
+  ################
+  stage {
+    name = "Deploy"
+
+    action {
+      name     = "DeployToEC2"
+      category = "Invoke"
+      owner    = "AWS"
+      provider = "SSM"
+      version  = "1"
+
+      configuration = {
+        DocumentName = aws_ssm_document.deploy_app.name
+        InstanceIds  = jsonencode([
+          "i-0f820681227d79757"   # 🔴 PUT YOUR REAL EC2 ID HERE
+        ])
       }
     }
   }
