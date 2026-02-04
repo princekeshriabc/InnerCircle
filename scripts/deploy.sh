@@ -33,8 +33,10 @@ npm install
 
 # Start / restart backend with PM2
 if pm2 describe backend > /dev/null 2>&1; then
+  export HOME=/home/ubuntu
   pm2 restart backend --update-env
 else
+  export HOME=/home/ubuntu
   pm2 start server.js --name backend
 fi
 
