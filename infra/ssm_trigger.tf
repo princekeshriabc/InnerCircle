@@ -3,6 +3,6 @@ resource "aws_ssm_association" "deploy_association" {
 
   targets {
     key    = "InstanceIds"
-    values = ["i-023c14b85097c7710"]
+    values = [aws_instance.app_server.id]
   }
 }
