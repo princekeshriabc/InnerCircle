@@ -86,3 +86,25 @@ export EMAIL_FROM=$(aws ssm get-parameter \
   --name "/prod/backend/EMAIL_FROM" \
   --query "Parameter.Value" \
   --output text)
+
+############################
+# FRONTEND ENV (VITE)
+############################
+
+export VITE_API_URL=$(aws ssm get-parameter \
+  --region $REGION \
+  --name "/prod/frontend/VITE_API_URL" \
+  --query "Parameter.Value" \
+  --output text)
+
+export VITE_API_URL_P=$(aws ssm get-parameter \
+  --region $REGION \
+  --name "/prod/frontend/VITE_API_URL_P" \
+  --query "Parameter.Value" \
+  --output text)
+
+export VITE_FIREBASE_API_KEY=$(aws ssm get-parameter \
+  --region $REGION \
+  --name "/prod/frontend/VITE_FIREBASE_API_KEY" \
+  --query "Parameter.Value" \
+  --output text)

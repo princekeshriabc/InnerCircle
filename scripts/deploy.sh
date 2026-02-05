@@ -27,6 +27,9 @@ fi
 echo "Deploying frontend..."
 cd $APP_DIR/frontend
 
+# 🔴 CRITICAL: LOAD ENV BEFORE BUILD
+source ../scripts/load_env.sh
+
 npm install
 npm run build
 
@@ -40,12 +43,7 @@ sudo cp -r dist/* /usr/share/nginx/html/
 echo "Deploying backend..."
 cd $APP_DIR/backend
 
-# Load backend env from SSM (fail loudly if missing)
-if [ ! -f "../scripts/load_env.sh" ]; then
-  echo "ERROR: load_env.sh not found"
-  exit 1
-fi
-
+# Backend also needs env
 source ../scripts/load_env.sh
 
 npm install
