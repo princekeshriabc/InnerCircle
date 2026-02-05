@@ -2,13 +2,14 @@
 set -e
 
 APP_DIR="/var/www/app"
+export HOME=/home/ubuntu
 
 echo "Starting deployment..."
 
 cd $APP_DIR
 
 ############################
-# FRONTEND DEPLOY
+# FRONTEND
 ############################
 
 echo "Deploying frontend..."
@@ -20,23 +21,23 @@ sudo rm -rf /usr/share/nginx/html/*
 sudo cp -r dist/* /usr/share/nginx/html/
 
 ############################
-# BACKEND DEPLOY
+# BACKEND
 ############################
 
 echo "Deploying backend..."
 cd ../backend
 
-# Load env from SSM
+# Load backend env from SSM
 source ../scripts/load_env.sh
 
 npm install
 
-# Start / restart backend with PM2
-if pm2 describe backend > /dev/null 2>&1; then
-  export HOME=/home/ubuntu
+# Start or restart backend safely
+if pm2 list | grep -q "backend"; then
+  echo "Restarting backend..."
   pm2 restart backend --update-env
 else
-  export HOME=/home/ubuntu
+  echo "Starting backend..."
   pm2 start server.js --name backend
 fi
 
